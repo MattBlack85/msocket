@@ -105,4 +105,15 @@
 		     :int (child-fd obj)
 		     :pointer buf
 		     :int 4096
-		     :int)buf)))
+		     :int)buf))
+
+(defmethod send ((obj base-socket) &key data)
+  (let ((str-size (length data)))
+    (with-foreign-pointer-as-string (buf (+ str-size 1))
+      (lisp-string-to-foreign data buf (+ str-size 1))
+      (foreign-funcall "send"
+		       :int (child-fd obj)
+		       :pointer buf
+		       :int str-size
+		       :int 0
+		       :int))))
