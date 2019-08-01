@@ -116,12 +116,14 @@
       (foreign-funcall "send"
 		       :int (child-fd obj)
 		       :pointer buf
+		       ;; the length we are interested to send is len(buffer) - 1
+		       ;; so we won't send over the socket the C char NULL terminator
 		       :int str-size
 		       :int 0
 		       :int))))
 
 (defvar stream-socket (make-instance 'base-socket
-				     ; AF_INET
+				     ;; AF_INET
 				     :domain 2
-				     ; SOCK_STREAM
+				     ;; SOCK_STREAM
 				     :socket-type 1))
