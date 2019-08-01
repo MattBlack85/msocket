@@ -48,12 +48,6 @@
    (child-fd
     :accessor child-fd)))
 
-(defvar stream-socket (make-instance 'base-socket
-				     ; AF_INET
-				     :domain 2
-				     ; SOCK_STREAM
-				     :socket-type 1))
-
 (defmethod initialize-instance :after ((obj base-socket) &key)
   (create-socket obj))
 
@@ -125,3 +119,9 @@
 		       :int str-size
 		       :int 0
 		       :int))))
+
+(defvar stream-socket (make-instance 'base-socket
+				     ; AF_INET
+				     :domain 2
+				     ; SOCK_STREAM
+				     :socket-type 1))
