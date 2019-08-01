@@ -21,28 +21,28 @@
   (foreign-funcall "inet_addr" :string addr :long))
 
 
-(defclass socket ()
+(defclass base-socket ()
   ((address
-    :initarg :address
-    :initform "127.0.0.1"
     :accessor address)
    (port
-    :initarg :port
-    :initform nil
     :accessor port)
    (fd
     :accessor fd)
    (domain
-    :initform 2 ; AF_INET
     :accessor domain)
    (socket-type
-    :initform 1 ; SOCK_STREAM
     :accessor socket-type)
    (backlog
     :initform 5
     :accessor backlog)
    (child-fd
     :accessor child-fd)))
+
+(defvar stream-socket (make-instance 'base-socket
+				     ; AF_INET
+				     :domain 2
+				     ; SOCK_STREAM
+				     :socket-type 1))
 
 (defmethod create-socket ((obj socket))
   (setf (slot-value obj 'fd)
