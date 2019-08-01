@@ -1,15 +1,23 @@
-(require ':cffi)
+(require :cffi)
 
-(defpackage :cffi-sock
-  (:use :common-lisp :cffi))
+(defpackage :msocket
+  (:use :common-lisp :cffi)
+  (:export #:stream-socket
+	   #:base-socket
+	   #:accept-connection
+	   #:socket-listen
+	   #:close-socket
+	   #:bind
+	   #:send
+	   #:recv))
 
-(in-package :cffi-sock)
+(in-package :msocket)
 
-(define-foreign-library msocket
+(define-foreign-library csocket
   (:unix (:or "libc.so.6" "libc.so"))
-  (t (:default "msocket")))
+  (t (:default "socket")))
 
-(use-foreign-library msocket)
+(use-foreign-library csocket)
 
 (defcstruct socket-addr-in
   (sin-family :short)
@@ -40,7 +48,7 @@
    (child-fd
     :accessor child-fd)))
 
-(defvar stream-sock (make-instance 'base-socket
+(defvar stream-socket (make-instance 'base-socket
 				     ; AF_INET
 				     :domain 2
 				     ; SOCK_STREAM
